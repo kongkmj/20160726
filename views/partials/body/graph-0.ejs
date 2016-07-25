@@ -30,58 +30,92 @@
                       </div>
                   </div>
 
-                  <a id="BTN" style="cursor:pointer;">
+                  <a id="#" style="cursor:pointer;">
                       <div class="panel-footer">
                           <span id="test7" class="pull-left"></span>
-                          <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+			  <span class = "pull-right">&nbsp;</span>
                           <div id="help"class="clearfix"></div>
                       </div>
                   </a>
               </div>
             </div>
+		<div class="col-lg-2" style="padding-top:3%">
+            <div id="audiocolor" class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                          <div id ="audioplay">
+                            <i class="fa fa-play fa-3x"></i>
+                        </div>
+                      </div>
+                        <div class="col-xs-6 text-right">
+                            <div id="audiotext"class="huge3">ON</div>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <a id="BTN" style="cursor:pointer;">
+                    <div class="panel-footer">
+                        <span id="test7" class="pull-left"></span>
+                        <span class="pull-right"></span>
+                        <div id="audiobutton"class="clearfix">멈춤</div>
+                    </div>
+                </a>
+            </div>
+
           </div>
-<canvas id="canvas" width="50%" height="25%";></canvas>
-<canvas id="canvas2" width="50%" height="25%";></canvas>
+          </div>
+<canvas id="canvas" width="50%" height="10%";></canvas>
+<canvas id="canvas2" width="50%" height="10%";></canvas>
 <br>
 <br>
 
-<button id ="interval1">주기1</button>
-<button id ="interval2">주기2</button>
-<button id ="interval3">주기3</button>
-<button id ="interval4">주기4</button>
-<button id ="interval5">주기5</button>
+<button id ="interval1">10 초</button>
+<button id ="interval2">1시간</button>
+<button id ="interval3">6시간</button>
+<button id ="interval4">12시간</button>
+<button id ="interval5">24시간</button>
 
 <script src="/socket.io/socket.io.js"></script>
 
 <script>
-var settingdata1x = parseInt("<%=data1.rule001x%>");
-var settingdata1y = parseInt("<%=data1.rule001y%>");
+var settingdata1x = 0;
+var settingdata1y = 0;
 
-var settingdata2x = parseInt("<%=data2.rule002x%>");
-var settingdata2y = parseInt("<%=data2.rule002y%>");
+var settingdata2x = 0;
+var settingdata2y = 0;
 
-var settingdata3x = parseInt("<%=data3.rule003x%>");
-var settingdata3y = parseInt("<%=data3.rule003y%>");
+var settingdata3x = 0;
+var settingdata3y = 0;
 
-var settingdata4x = parseInt("<%=data4.rule004x%>");
-var settingdata4y = parseInt("<%=data4.rule004y%>");
+var settingdata4x = 0;
+var settingdata4y = 0;
 
-var settingdata5x = parseInt("<%=data5.rule005x%>");
-var settingdata5y = parseInt("<%=data5.rule005y%>");
+var settingdata5x = 0;
+var settingdata5y = 0;
 
 
-var socket = io.connect("http://localhost:3000");
+var socket = io.connect("http://52.78.82.199:80");
 var audio = new Audio();
 audio.src='/audio/alert.mp3';
 var alert_cnt=0;
+audio.loop=true;
+var audio_cnt=0;
 
+
+// alaram
 var color = $("#color");
 var emoticon =$("#emoticon i");
 var size = $("#size");
 var text1 = $("#text");
 var alaram1 = $("#help");
 
-
+//audio
+var audiocolor= $("#audiocolor");
+var audioicon = $("#audioplay i");
+var audiotext = $("#audiotext");
+var audiobutton = $("#audiobutton");
 
 
 
@@ -138,6 +172,26 @@ socket.on('news',function (alaram,dbprevData) {
     initChart();
   }
 
+  $('#BTN').click(function () {
+    audio_cnt+=1;
+    if(audio_cnt==1){
+      audio.muted=true;
+      audiotext.text("OFF");
+      audiobutton.text(" 시작");
+      audioicon.removeClass("fa fa-play");
+      audioicon.addClass("fa fa-pause");
+    }
+    if(audio_cnt==2){
+      audio.muted=false;
+      audiotext.text("ON");
+      audiobutton.text(" 멈춤");
+      audioicon.removeClass("fa fa-pause");
+      audioicon.addClass("fa fa-play");
+      audio_cnt=0;
+    }
+
+  })
+
   if(alaram!=""){
     //alert_cnt=1;
     color.removeClass("panel-green");
@@ -147,12 +201,11 @@ socket.on('news',function (alaram,dbprevData) {
     text1.text("경고");
     alaram1.text(alaram);
     audio.play();
-
   }
 
  if(alaram==""){
   // alert_cnt=0;
-  alaram1.text('');
+  alaram1.text("\u00A0");
   color.removeClass("panel-red");
   color.addClass("panel-green");
   emoticon.removeClass("fa fa-meh-o");
@@ -183,7 +236,7 @@ console.log(recieveArray);
 
  if(alaram==""){
    alert_cnt=0;
-  alaram1.text('');
+  alaram1.text("\u00A0");
   color.removeClass("panel-red");
   color.addClass("panel-green");
   emoticon.removeClass("fa fa-meh-o");
@@ -279,7 +332,7 @@ console.log(recieveArray);
                 pointBorderColor : "#FF4848",
                 pointBackgroundColor :"#FF4848",
                 pointBorderWidth : 1,
-                label: "1번 Roll",
+                label: "1번 X",
                 data: [],
                 lineTension: 0,
                 fill: false,
@@ -291,7 +344,7 @@ console.log(recieveArray);
                 pointBorderColor : "#FF5E00",
                 pointBackgroundColor :"#FF5E00",
                 pointBorderWidth : 1,
-                label: "2번 Roll",
+                label: "2번 X",
                 data: [],
                 lineTension: 0,
                 fill: false,
@@ -302,7 +355,7 @@ console.log(recieveArray);
                 pointBorderColor : "#FFE400",
                 pointBackgroundColor :"#FFE400",
                 pointBorderWidth : 1,
-                label: "3번 Roll",
+                label: "3번 X",
                 data: [],
                 lineTension: 0,
                 fill: false,
@@ -313,7 +366,7 @@ console.log(recieveArray);
                 pointBorderColor : "#47C83E",
                 pointBackgroundColor :"#47C83E",
                 pointBorderWidth : 1,
-                label: "4번 Roll",
+                label: "4번 X",
                 data: [],
                 lineTension: 0,
                 fill: false,
@@ -324,7 +377,7 @@ console.log(recieveArray);
                 pointBorderColor : "#4374D9",
                 pointBackgroundColor :"#4374D9",
                 pointBorderWidth : 1,
-                label: "5번 Roll",
+                label: "5번 X",
                 data: [],
                 lineTension: 0,
                 fill: false,
@@ -350,7 +403,7 @@ console.log(recieveArray);
                 }],
                 yAxes: [{
                     ticks:{
-                      suggestedMax: 180,
+                      suggestedMax:90,
                       beginAtZero: true
                     },
                     display: true,
@@ -376,7 +429,7 @@ console.log(recieveArray);
                 pointBorderColor : "#FF4848",
                 pointBackgroundColor :"#FF4848",
                 pointBorderWidth : 1,
-                label: "1번 Pitch",
+                label: "1번 Y",
                 data: [],
                 lineTension: 0,
                 fill: false,
@@ -388,7 +441,7 @@ console.log(recieveArray);
                 pointBorderColor : "#FF5E00",
                 pointBackgroundColor :"#FF5E00",
                 pointBorderWidth : 1,
-                label: "2번 Pitch",
+                label: "2번 Y",
                 data: [],
                 lineTension: 0,
                 fill: false,
@@ -399,7 +452,7 @@ console.log(recieveArray);
                 pointBorderColor : "#FFE400",
                 pointBackgroundColor :"#FFE400",
                 pointBorderWidth : 1,
-                label: "3번 Pitch",
+                label: "3번 Y",
                 data: [],
                 lineTension: 0,
                 fill: false,
@@ -410,7 +463,7 @@ console.log(recieveArray);
                 pointBorderColor : "#47C83E",
                 pointBackgroundColor :"#47C83E",
                 pointBorderWidth : 1,
-                label: "4번 Pitch",
+                label: "4번 Y",
                 data: [],
                 lineTension: 0,
                 fill: false,
@@ -421,7 +474,7 @@ console.log(recieveArray);
                 pointBorderColor : "#4374D9",
                 pointBackgroundColor :"#4374D9",
                 pointBorderWidth : 1,
-                label: "5번 Pitch",
+                label: "5번 Y",
                 data: [],
                 lineTension: 0,
                 fill: false,
@@ -447,7 +500,7 @@ console.log(recieveArray);
                 }],
                 yAxes: [{
                     ticks:{
-                      suggestedMax: 180,
+                      suggestedMax: 90,
                       beginAtZero: true
                     },
                     display: true,

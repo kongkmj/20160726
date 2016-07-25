@@ -41,19 +41,45 @@
                       </div>
                   </div>
 
-                  <a id="BTN" style="cursor:pointer;">
+                  <a id="#" style="cursor:pointer;">
                       <div class="panel-footer">
                           <span id="test7" class="pull-left"></span>
-                          <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+			  <span class="pull-right">&nbsp;</span>
                           <div id="help"class="clearfix"></div>
                       </div>
                   </a>
               </div>
             </div>
+		<div class="col-lg-2" style="padding-top:3%">
+            <div id="audiocolor" class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                          <div id ="audioplay">
+                            <i class="fa fa-play fa-3x"></i>
+                        </div>
+                      </div>
+                        <div class="col-xs-9 text-center">
+                            <div id="audiotext"class="huge3">ON</div>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <a id="BTN" style="cursor:pointer;">
+                    <div class="panel-footer">
+                        <span id="test7" class="pull-left"></span>
+                        <span class="pull-right"></span>
+                        <div id="audiobutton"class="clearfix">멈춤</div>
+                    </div>
+                </a>
+            </div>
+
+          </div>
           </div>
 
-    <canvas id="canvas" width="50%" height="25%";></canvas>
-    <canvas id="canvas2" width="50%" height="25%";></canvas>
+    <canvas id="canvas" width="50%" height="10%";></canvas>
+    <canvas id="canvas2" width="50%" height="10%";></canvas>
 
 
 <br>
@@ -74,8 +100,8 @@
 
                                           <th style="width:10%">중계기 번호</th>
                                           <th style="width:10%">감지기 번호</th>
-                                          <th style="width:20%">Roll 변동 수치</th>
-                                          <th style="width:20%">Pitch 변동 수치</th>
+                                          <th style="width:20%">X 변동 수치</th>
+                                          <th style="width:20%">Y 변동 수치</th>
                                           <th style="width:20%">날짜</th>
                                           <th style="width:20%">시간</th>
                                           <th style="width:10%">등급</th>
@@ -114,21 +140,28 @@
 <script src="/socket.io/socket.io.js"></script>
 
 <script>
-var settingdata1 = parseInt("<%=data2.rule001x%>");
-var settingdata2 = parseInt("<%=data2.rule001x%>");
+var settingdata1 = 0;
+var settingdata2 = 0;
 
-var socket = io.connect("http://localhost:3000");
+var socket = io.connect("http://52.78.82.199:80");
 var audio = new Audio();
 audio.src='/audio/alert.mp3';
 var alert_cnt=0;
+audio.loop=true;
+var audio_cnt=0;
 
+//alaram
 var color = $("#color");
 var emoticon =$("#emoticon i");
 var size = $("#size");
 var text1 = $("#text");
 var alaram1 = $("#help");
 
-
+//audio
+var audiocolor= $("#audiocolor");
+var audioicon = $("#audioplay i");
+var audiotext = $("#audiotext");
+var audiobutton = $("#audiobutton");
 
 
 socket.on('news',function (alaram,dbprevData) {
@@ -148,6 +181,26 @@ socket.on('news',function (alaram,dbprevData) {
     initChart();
   }
 
+  $('#BTN').click(function () {
+    audio_cnt+=1;
+    if(audio_cnt==1){
+      audio.muted=true;
+      audiotext.text("OFF");
+      audiobutton.text(" 시작");
+      audioicon.removeClass("fa fa-play");
+      audioicon.addClass("fa fa-pause");
+    }
+    if(audio_cnt==2){
+      audio.muted=false;
+      audiotext.text("ON");
+      audiobutton.text(" 멈춤");
+      audioicon.removeClass("fa fa-pause");
+      audioicon.addClass("fa fa-play");
+      audio_cnt=0;
+    }
+
+  })
+
   if(alaram!=""){
     //alert_cnt=1;
     color.removeClass("panel-green");
@@ -162,7 +215,7 @@ socket.on('news',function (alaram,dbprevData) {
 
  if(alaram==""){
   // alert_cnt=0;
-  alaram1.text('');
+  alaram1.text("\u00A0");
   color.removeClass("panel-red");
   color.addClass("panel-green");
   emoticon.removeClass("fa fa-meh-o");
@@ -191,7 +244,7 @@ console.log(recieveArray);
 
  if(alaram==""){
    alert_cnt=0;
-  alaram1.text('');
+  alaram1.text("\u00A0");
   color.removeClass("panel-red");
   color.addClass("panel-green");
   emoticon.removeClass("fa fa-meh-o");
@@ -286,7 +339,7 @@ console.log(recieveArray);
                 pointBorderColor : "#FF4848",
                 pointBackgroundColor :"#FF4848",
                 pointBorderWidth : 1,
-                label: "1번 Roll",
+                label: "1번 X",
                 data: [],
                 lineTension: 0,
                 fill: false,
@@ -312,7 +365,7 @@ console.log(recieveArray);
                 }],
                 yAxes: [{
                     ticks:{
-                      suggestedMax: 180,
+                      suggestedMax: 90,
                       beginAtZero: true
                     },
                     display: true,
@@ -338,7 +391,7 @@ console.log(recieveArray);
                 pointBorderColor : "#FF4848",
                 pointBackgroundColor :"#FF4848",
                 pointBorderWidth : 1,
-                label: "1번 Pitch",
+                label: "1번 Y",
                 data: [],
                 lineTension: 0,
                 fill: false,
@@ -364,7 +417,7 @@ console.log(recieveArray);
                 }],
                 yAxes: [{
                     ticks:{
-                      suggestedMax: 180,
+                      suggestedMax: 90,
                       beginAtZero: true
                     },
                     display: true,

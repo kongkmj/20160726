@@ -50,7 +50,6 @@ var server = net.createServer(function (socket2) {
   io.on('connection',function (socket) {
     socket.on('intervalEV',function (message) {
       intervalmessage=message;
-	//console.log("!!");
       socket2.write("a"+rangedata[0]+"x"+rangedata[1]+"x"+rangedata[2]+"x"+rangedata[3]+"x"+rangedata[4]+"x"+message+"b");
     });
 
@@ -63,7 +62,6 @@ var server = net.createServer(function (socket2) {
 	suck1,suck2,suck3,suck4,suck5=0;
 
     socket.on('standardData',function () {
-	//console.log("@@");
       socket2.write("a"+rangedata[0]+"x"+rangedata[1]+"x"+rangedata[2]+"x"+rangedata[3]+"x"+rangedata[4]+"x"+intervalmessage+"b");
 	socket.disconnect();
     });
@@ -177,6 +175,39 @@ var server = net.createServer(function (socket2) {
   parsingdata[8] =  parseInt(d013);
   parsingdata[9] =  parseInt(d014);
 
+// 수신데이터 최대값 설정
+if(parsingdata[0]>90){
+  parsingdata[0]=90;
+}
+if(parsingdata[1]>90){
+  parsingdata[1]=90;
+}
+if(parsingdata[2]>90){
+  parsingdata[2]=90;
+}
+if(parsingdata[3]>90){
+  parsingdata[3]=90;
+}
+if(parsingdata[4]>90){
+  parsingdata[4]=90;
+}
+if(parsingdata[5]>90){
+  parsingdata[5]=90;
+}
+if(parsingdata[6]>90){
+  parsingdata[6]=90;
+}
+if(parsingdata[7]>90){
+  parsingdata[7]=90;
+}
+if(parsingdata[8]>90){
+  parsingdata[8]=90;
+}
+if(parsingdata[9]>90){
+  parsingdata[9]=90;
+}
+
+
 
 
 //민감도
@@ -187,12 +218,12 @@ rcrule[3] = d012;
 rcrule[4] = d015;
 
 //이상데이터
-/*
-console.log(d016.length);
+
+//console.log(d016.length);
 if(d016.length!=3){
   socket2.write("tt");
 }
-*/
+
 
 //주기
 rcinterval = d016;
@@ -308,28 +339,6 @@ if(rcrule[0]!=rangedata[0]||rcrule[1]!=rangedata[1]||rcrule[2]!=rangedata[2]||rc
 
   }
 
- //test용 디바이스에서 보낸데이터 비교
-/*
-if(rcrule[0]!=rangedata[0]){
-  console.log("1");
-}
-if(rcrule[1]!=rangedata[1]){
-  console.log("2");
-}
-if(rcrule[2]!=rangedata[2]){
-  console.log("3");
-}
-if(rcrule[3]!=rangedata[3]){
-  console.log("4");
-}
-if(rcrule[4]!=rangedata[4]){
-  console.log("5");
-}
-if(rcinterval!=intervalmessage){
-  console.log("6");
-}
-*/
-
 
 }
 
@@ -387,72 +396,72 @@ var notidata005y = parseInt(rule_005.rule005y);
 
 
 // (1) 알람 연산
-var plus001x = notidata001x +parseInt(parse1);
-var plus001y = notidata001y +parseInt(parse1);
-var minus001x = notidata001x - parseInt(parse1);
-var minus001y = notidata001y - parseInt(parse1);
+var plus001x = (parse1);
+var plus001y = (parse1);
+var minus001x =  (parse1);
+var minus001y =  (parse1);
 
 
-if((parsingdata[0]>plus001x)||(parsingdata[0]<minus001x)||(parsingdata[1]>plus001y)||(parsingdata[1]<minus001y)){
+if((parsingdata[0]>plus001x)||(parsingdata[1]>plus001y)){
   noti001=1;
 }
-if((parsingdata[0]<=plus001x)&&(parsingdata[0]>=minus001x)&&(parsingdata[1]<=plus001y)&&(parsingdata[1]>=minus001y)){
+if((parsingdata[0]<=plus001x)&&(parsingdata[1]<=plus001y)){
   noti001=0;
 }
 
 
 // (2) 알람 연산
-var plus002x = notidata002x +parseInt(parse2);
-var plus002y = notidata002y +parseInt(parse2);
-var minus002x = notidata002x - parseInt(parse2);
-var minus002y = notidata002y - parseInt(parse2);
+var plus002x = parseInt(parse2);
+var plus002y = parseInt(parse2);
+var minus002x =  parseInt(parse2);
+var minus002y =  parseInt(parse2);
 
-if((parsingdata[2]>plus002x)||(parsingdata[2]<minus002x)||(parsingdata[3]>plus002y)||(parsingdata[3]<minus002y)){
+if((parsingdata[2]>plus002x)||(parsingdata[3]>plus002y)){
   noti002=1;
 }
-if((parsingdata[2]<=plus002x)&&(parsingdata[2]>=minus002x)&&(parsingdata[3]<=plus002y)&&(parsingdata[3]>=minus002y)){
+if((parsingdata[2]<=plus002x)&&(parsingdata[3]<=plus002y)){
   noti002=0;
 }
 
 
 // (3) 알람 연산
-var plus003x = parseInt(rule_003.rule003x) +parseInt(parse3);
-var plus003y = parseInt(rule_003.rule003y) +parseInt(parse3);
-var minus003x = parseInt(rule_003.rule003x) - parseInt(parse3);
-var minus003y = parseInt(rule_003.rule003y) - parseInt(parse3);
+var plus003x = parseInt(parse3);
+var plus003y = parseInt(parse3);
+var minus003x =  parseInt(parse3);
+var minus003y =  parseInt(parse3);
 
-if((parsingdata[4]>plus003x)||(parsingdata[4]<minus003x)||(parsingdata[5]>plus003y)||(parsingdata[5]<minus003y)){
+if((parsingdata[4]>plus003x)||(parsingdata[5]>plus003y)){
   noti003=1;
 }
-if((parsingdata[4]<=plus003x)&&(parsingdata[4]>=minus003x)&&(parsingdata[5]<=plus003y)&&(parsingdata[5]>=minus003y)){
+if((parsingdata[4]<=plus003x)&&(parsingdata[5]<=plus003y)){
   noti003=0;
 }
 
 
 // (4) 알람 연산
-var plus004x = parseInt(rule_004.rule004x) +parseInt(parse4);
-var plus004y = parseInt(rule_004.rule004y) +parseInt(parse4);
-var minus004x = parseInt(rule_004.rule004x) - parseInt(parse4);
-var minus004y = parseInt(rule_004.rule004y) - parseInt(parse4);
+var plus004x = parseInt(parse4);
+var plus004y = parseInt(parse4);
+var minus004x = parseInt(parse4);
+var minus004y =  parseInt(parse4);
 
-if((parsingdata[6]>plus004x)||(parsingdata[6]<minus004x)||(parsingdata[7]>plus004y)||(parsingdata[7]<minus004y)){
+if((parsingdata[6]>plus004x)||(parsingdata[7]>plus004y)){
   noti004=1;
 }
-if((parsingdata[6]<=plus004x)&&(parsingdata[6]>=minus004x)&&(parsingdata[7]<=plus004y)&&(parsingdata[7]>=minus004y)){
+if((parsingdata[6]<=plus004x)&&(parsingdata[7]<=plus004y)){
   noti004=0;
 }
 
 
 // (5) 알람 연산
-var plus005x = parseInt(rule_005.rule005x) +parseInt(parse5);
-var plus005y = parseInt(rule_005.rule005y) +parseInt(parse5);
-var minus005x = parseInt(rule_005.rule005x) - parseInt(parse5);
-var minus005y = parseInt(rule_005.rule005y) - parseInt(parse5);
+var plus005x = parseInt(parse5);
+var plus005y = parseInt(parse5);
+var minus005x =  parseInt(parse5);
+var minus005y =  parseInt(parse5);
 
-if((parsingdata[8]>plus005x)||(parsingdata[8]<minus005x)||(parsingdata[9]>plus005y)||(parsingdata[9]<minus005y)){
+if((parsingdata[8]>plus005x)||(parsingdata[9]>plus005y)){
   noti005=1;
 }
-if((parsingdata[8]<=plus005x)&&(parsingdata[8]>=minus005x)&&(parsingdata[9]<=plus005y)&&(parsingdata[9]>=minus005y)){
+if((parsingdata[8]<=plus005x)&&(parsingdata[9]<=plus005y)){
   noti005=0;
 }
 
@@ -635,7 +644,7 @@ server.listen(11111,function () {
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ DB 관련 start @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 //##################### DB 연결 ########################
-mongoose.connect("mongodb://test:test@ds023664.mlab.com:23664/roadtest");
+mongoose.connect("mongodb://172.31.11.180:27017");
 var db = mongoose.connection;
 db.once("open",function () {
   console.log("DB connected");
@@ -710,12 +719,6 @@ app.use(express.static(path.join(__dirname, 'public')));// 정적폴더 세팅
 
 
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@ mapping 관련 START @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-/*
-if(suck==1){
-  console.log("suckout");
-  huck=1;
-}
-*/
 
 //##################### 접속 첫 페이지 ########################
 app.get('/',function (req,res) {
@@ -778,7 +781,6 @@ app.get('/input',function (req,res) {
 
 // (1)
 app.post('/input1',function (req,res) {
-  //console.log("this is "+duck1);
   if(duck1==1){
     ruledata[0]=data_001;
     ruledata[1]=data_002;
@@ -818,7 +820,6 @@ app.post('/input1',function (req,res) {
 
 // (2)
 app.post('/input2',function (req,res) {
-  //console.log("2 this is "+duck2);
 
   if(duck2==1){
     ruledata[2]=data_003;
@@ -1291,7 +1292,7 @@ beaconData.find({}).limit(20).sort({$natural:-1}).exec(function (err,rcdata) {
 
 
 
-http.listen(3000,function(){
-    console.log('listening at 3000');
+http.listen(80,function(){
+    console.log('listening at 80');
 
 });
